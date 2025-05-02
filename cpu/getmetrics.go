@@ -13,7 +13,7 @@ func CountLogicalCores(physical bool) int {
 
 }
 func CpuUsage(percpu bool) []float64 {
-	usage, _ := cpu.Percent(1*time.Minute, percpu)
+	usage, _ := cpu.Percent(1*time.Second, percpu)
 	return usage
 }
 
