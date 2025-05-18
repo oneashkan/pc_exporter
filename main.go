@@ -1,21 +1,27 @@
 package main
 
 import (
+	"fmt"
 	"go-version/common"
 	"go-version/cpu"
-	"go-version/disk"
-	"go-version/memory"
-	"go-version/network"
-	"go-version/power"
+	"net/http"
+
+	"github.com/prometheus/client_golang/prometheus/promhttp"
 )
 
 func main() {
 	if common.CanMonitor() {
-		power.GetBatteryInfo()
-		cpu.GetCpuInfo()
-		disk.DiskInfo()
-		memory.MemInfo()
-		network.GetNetworkIO()
-		network.NetInfo()
+		//power.GetBatteryInfo()
+		for {
+			cpu.UpdateCpuMetrics()
+			//disk.DiskInfo()
+			//memory.MemInfo()
+			//network.GetNetworkIO()
+			//network.NetInfo()
+			http.Handle("/metrics/", promhttp.Handler())
+			http.ListenAndServe(":3001", nil)
+			fmt.Println("Server Started")
+
+		}
 	}
 }
